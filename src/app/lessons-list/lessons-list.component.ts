@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observer, GlobalEventBus } from 'app/event-bus-experiments/event-bus';
+import { Observer, globalEventBus, LESSON_LIST_AVAILABLE } from '../event-bus-experiments/event-bus';
 import { Lesson } from '../shared/lesson';
 
 @Component({
@@ -7,14 +7,13 @@ import { Lesson } from '../shared/lesson';
   templateUrl: './lessons-list.component.html',
   styleUrls: ['./lessons-list.component.css']
 })
-export class LessonsListComponent implements OnInit, Observer {
+export class LessonsListComponent implements Observer {
   lessons: Lesson[] = [];
-  constructor() { }
-  
-  ngOnInit() {
-    GlobalEventBus.registerObserver(this);
+  constructor() {
+    console.log('Lesson list is registered as an observer');
+    globalEventBus.registerObserver(LESSON_LIST_AVAILABLE,this);
   }
-  
+
   notify(data: Lesson[]) {
     this.lessons = [...data];
   }

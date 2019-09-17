@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalEventBus } from './event-bus';
+import { globalEventBus, LESSON_LIST_AVAILABLE } from './event-bus';
 import { testLessons } from '../shared/test-lessons';
+import { Lesson } from '../shared/lesson';
 
 @Component({
   selector: 'event-bus-experiments',
@@ -8,11 +9,22 @@ import { testLessons } from '../shared/test-lessons';
   styleUrls: ['./event-bus-experiments.component.css']
 })
 export class EventBusExperimentsComponent implements OnInit {
-
+  testLessons = testLessons;
   constructor() { }
 
   ngOnInit() {
-    GlobalEventBus.notifyObservers(testLessons);
+    globalEventBus.notifyObservers(LESSON_LIST_AVAILABLE,this.testLessons);
+  }
+
+  addLesson(value) {
+    debugger
+    const lesson: Lesson = {
+      id: Math.random(),
+      description: value,
+      duration: '4:00'
+    }
+    this.testLessons = [...this.testLessons, lesson];
+    globalEventBus.notifyObservers(LESSON_LIST_AVAILABLE,this.testLessons);
   }
 
 }
